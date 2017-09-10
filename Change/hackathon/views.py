@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
-from models import UserModel,SessionToken
-from forms import LoginForm,SignUpForm
+from models import UserModel,SessionToken,indexmodel
+from forms import LoginForm,SignUpForm,Indexform1
 from django.contrib.auth.hashers import make_password,check_password
 from django.shortcuts import render,redirect
 import os
@@ -28,20 +28,20 @@ def singnup_view(request):
         if form.is_valid():
             print ' form is valid'
             username = form.cleaned_data['username']
-            name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = UserModel(name=name, password=make_password(password), email=email, username=username)
+            re_password = form.cleaned_data['re_password']
+            user = UserModel(password=make_password(password),re_password=make_password(re_password),email=email, username=username)
 
             user.save()
             print ' user saved'
-            return render(request, 'sucess.html')
+            return render(request, 'login.html')
         else:
             print ' form invalid'
     elif request.method == "GET":
         print ' get called'
         form = SignUpForm()
-    return render(request, 'instalogi.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
 
 
 # login function
@@ -76,7 +76,7 @@ def login_user(request):
                     token = SessionToken(user=user)
                     token.create_token()
                     token.save()
-                    response = redirect('/feed/')
+                    response = redirect('/index/')
                     response.set_cookie(key='session_token', value=token.session_token)
                     return response
                 else:
@@ -108,3 +108,29 @@ def logout_view(request):
 
 
 # Create your views here.
+def indexview1(request):
+    if request.method == 'POST':
+        form = Indexform1(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name= form.cleaned_data['last_name']
+            #subject = form.cleaned_data['subject']
+            user = indexmodel(first_name=first_name,last_name=last_name)
+            user.save()
+            try:
+                email = form.cleaned_data.get('email')
+                emaill = EmailMessage('Feedback', 'New suggestion form' + (first_name),
+                                      to=[email])
+                emaill.send()
+                print "email send"
+            except:
+                print ' network error in sending the mail'
+
+            return render(request, 'index.html')
+        else:
+            print " "
+    elif request.method == 'GET':
+        form = Indexform1()
+    return render(request, 'index.html', {'form': form})
+
+

@@ -1,8 +1,10 @@
 from django.conf.urls import url
-from views import singnup_view,login_user,logout_view
+from views import singnup_view,indexview1,login_user,logout_view
 
 urlpatterns = [
-    url(r'^$', singnup_view),
+    url(r'^$', indexview1),
+    url(r'^signip/',singnup_view),
+    url(r'^index/',indexview1),
     url(r'^login/',login_user),
     url(r'^logout',logout_view),
 ]

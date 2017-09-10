@@ -7,9 +7,9 @@ import uuid
 # Create your models here.
 class UserModel(models.Model):
   email = models.EmailField()
-  name = models.CharField(max_length=120)
   username = models.CharField(max_length=120)
   password = models.CharField(max_length=400)
+  re_password = models.CharField(max_length=400)
   created_on = models.DateTimeField(auto_now_add=True)
   updated_on = models.DateTimeField(auto_now=True)
 
@@ -27,3 +27,12 @@ class SessionToken(models.Model):
 
     def create_token(self):
         self.session_token = uuid.uuid4()
+
+class indexmodel(models.Model):
+
+    first_name=models.CharField(max_length=400)
+    last_name = models.CharField(max_length=400)
+    #subject= models.CharField(max_length=400)
+
+    def __str__(self):
+        self.first_name

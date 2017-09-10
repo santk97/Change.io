@@ -29,7 +29,10 @@
   </head>
   <body data-spy="scroll" data-target=".navbar" data-offset="50">
 
-      
+       <form method="post" >
+
+{% csrf_token %}
+
       
       <!--navbar starts-->
       
@@ -58,8 +61,8 @@
     
             <ul class="nav navbar-nav navbar-right">
         
-        <li class="text" ><a href="signup.html"class="white animated slideInLeft"style="padding:11px 15px 0 15px;">Sign Up</a></li>
-     <li class="text" ><a href="login.html"class="white animated slideInLeft"style="padding:11px 15px 0 15px;">Log In</a></li>
+        <li class="text" ><a href="/signup"class="white animated slideInLeft"style="padding:11px 15px 0 15px;">Sign Up</a></li>
+     <li class="text" ><a href="/login"class="white animated slideInLeft"style="padding:11px 15px 0 15px;">Log In</a></li>
 
     </ul>
         
@@ -327,10 +330,10 @@ Your browser does not support the video tag.
           <form action="">
 
     <label for="fname">First Name</label>
-    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+    <input type="text" id="fname" name="firstname" placeholder="Your name.."value={{ first_name}}>
 
     <label for="lname">Last Name</label>
-    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+    <input type="text" id="lname" name="lastname" placeholder="Your last name.."{{ last_name }}>
     <label for="subject">Subject</label>
     <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
      <button class="post-message btn "type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
@@ -388,5 +391,5 @@ Your browser does not support the video tag.
     <script src="../static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/pace.min.js"></script>
     <script src="../static/js/custom.js"></script>
-  </body>
+       </form></body>
 </html>
