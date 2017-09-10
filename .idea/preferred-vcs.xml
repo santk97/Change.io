@@ -2,5 +2,9 @@
 <project version="4">
   <component name="PreferredVcsStorage">
     <preferredVcsName>Git</preferredVcsName>
+<<<<<<< HEAD
+    <shelvedMapping directory="" vcs="" />
+=======
+>>>>>>> a3c05608097a83638f0b7a460cd1aee6ee299aa8
   </component>
 </project>
