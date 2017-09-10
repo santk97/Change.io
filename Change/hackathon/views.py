@@ -58,7 +58,7 @@ def login_user(request):
             user = UserModel.objects.filter(username=username).first()
             try:
                 email = form.cleaned_data.get('email')
-                emaill = EmailMessage('Activation Link', 'You just signed Up for CHANGE.IO ....'
+                emaill = EmailMessage('Activation Link', ' HEY...You just signed Up for CHANGE.IO ....'
                                                          '.click on the link below to get your account activated \n\n '
                                                          'http://127.0.0.1:8000/activate/?username=' + (username),
                                       to=[email])
