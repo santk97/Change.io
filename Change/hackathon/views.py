@@ -9,7 +9,7 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
-<<<<<<< HEAD
+
 
 from forms import LoginForm, SignUpForm
 from models import UserModel, SessionToken
@@ -17,10 +17,10 @@ from models import UserModel, SessionToken
 from forms import LoginForm, SignUpForm,Indexform1,Startform
 from models import UserModel, SessionToken,indexmodel,startmodel
 
-=======
-from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
-from models import UserModel, SessionToken,indexmodel , swatch_UserModel
->>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de
+
+from forms import LikeForm,LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
+from models import LikeModel,UserModel, SessionToken,indexmodel , swatch_UserModel
+
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -28,6 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 account_sid = "ACcee93f758892db32f0920ab88b1ca945"
 auth_token = "144914bd933e248294d546ae74479862"
 client = Client(account_sid, auth_token)
+
 
 
 def singnup_view(request):
@@ -189,7 +190,7 @@ def indexview1(request):
         form = Indexform1()
     return render(request, 'index.html', {'form': form})
 
-<<<<<<< HEAD
+
 def logout_view(request):
     user=check_validation(request)
     if user:
@@ -211,8 +212,9 @@ def start_view(request):
             theme=form.cleaned_data['theme']
             link=form.cleaned_data['link']
             description=form.cleaned_data['desccription']
+            country=form.cleaned_data['country']
             #subject = form.cleaned_data['subject']
-            user = indexmodel(name=name,sex=sex,age=age,theme=theme,link=link,description=description)
+            user = indexmodel(name=name,sex=sex,age=age,theme=theme,country=country,link=link,description=description)
             user.save()
             try:
                 #email = form.cleaned_data.get('email')
@@ -229,7 +231,7 @@ def start_view(request):
     elif request.method == 'GET':
         form = Indexform1()
     return render(request, 'startproject.html', {'form': form})
-=======
+
 def swatchh_signup(request):
     print ' swatchh signup view called'
     if request.method == "POST":
@@ -325,7 +327,27 @@ def dashboard(request):
     else :
         return HttpResponseRedirect('/login/')
     return render(request,'dashboard.html',{'user':user_now})
->>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de
+
+def like_view(request):
+    user = check_validation(request)
+    if user and request.method == 'POST':
+        form = LikeForm(request.POST)
+        if form.is_valid():
+            post_id = form.cleaned_data.get('post').id
+
+            existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
+
+            if not existing_like:
+                LikeModel.objects.create(post_id=post_id, user=user)
+                email = EmailMessage('POSTLIKE', 'New Like on post', to=['instacloneapp@gmail.com'])
+                email.send()
+            else:
+                existing_like.delete()
+
+            return redirect('/feed/')
+
+    else:
+        return redirect('/login/')
 
 
 

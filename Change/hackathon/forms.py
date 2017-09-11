@@ -1,8 +1,7 @@
-<<<<<<< HEAD
+
 from models import UserModel,project_model , indexmodel,startmodel
-=======
-from models import UserModel,project_model , indexmodel ,swatch_UserModel
->>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de
+from models import UserModel,project_model , LikeModel,indexmodel ,swatch_UserModel
+
 from django import forms
 
 class SignUpForm(forms.ModelForm):
@@ -21,13 +20,12 @@ class LoginForm(forms.ModelForm):
       model = UserModel
       fields = ['email', 'password']
 
-<<<<<<< HEAD
 
 class Startform(forms.ModelForm):
     class Meta:
         mode=startmodel
-        fields=['name','sex','age','theme','link','description']
-=======
+        fields=['name','sex','age','theme','country','link','description']
+
 class swatch_signform(forms.ModelForm):
     class Meta:
         model=swatch_UserModel
@@ -37,4 +35,8 @@ class swatch_LoginForm(forms.ModelForm):
     class Meta:
       model = swatch_UserModel
       fields = ['email', 'password']
->>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de
+
+class LikeForm(forms.ModelForm):
+  class Meta:
+    model = LikeModel
+    fields = ['post']
