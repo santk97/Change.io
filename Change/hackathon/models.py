@@ -44,6 +44,19 @@ class feedback_model(models.Model):
     subject=models.TextField()
 
 
+class startmodel(models.Model):
+
+    
+    name=models.CharField(max_length=400)
+    age=models.IntegerField(max_length=2)
+    link=models.URLField()
+    country=models.CharField(max_length=400)
+    theme=models.CharField(max_length=400)
+    description=models.CharField(max_length=400)
+    sex=models.CharField(max_length=10)
+    def __str__(self):
+        return self.name
+
 class swatch_UserModel(models.Model):
   email = models.EmailField()
   name = models.CharField(max_length=120)
@@ -55,4 +68,9 @@ class swatch_UserModel(models.Model):
 
   def __str__(self):
        return self.email
+
+class LikeModel(models.Model):
+    user = models.ForeignKey(UserModel)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
 
