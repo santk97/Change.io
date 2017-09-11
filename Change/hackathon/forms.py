@@ -4,7 +4,7 @@ from django import forms
 class SignUpForm(forms.ModelForm):
   class Meta:
     model = UserModel
-    fields=['email','username','name','password','re_password']
+    fields=['email','name','password','re_password']
 
 
 class Indexform1(forms.ModelForm):
@@ -15,4 +15,4 @@ class Indexform1(forms.ModelForm):
 class LoginForm(forms.ModelForm):
     class Meta:
       model = UserModel
-      fields = ['username', 'password']
+      fields = ['email', 'password']

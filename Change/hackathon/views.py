@@ -21,21 +21,33 @@ client = Client(account_sid, auth_token)
 
 
 def singnup_view(request):
-    print ' view called'
+    print ' signup view called'
     if request.method == "POST":
         print ' post called'
         form = SignUpForm(request.POST)
         if form.is_valid():
             print ' form is valid'
-            username = form.cleaned_data['username']
+            name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             re_password = form.cleaned_data['re_password']
-            user = UserModel(password=make_password(password),re_password=make_password(re_password),email=email, username=username)
+            print name , email
+            user = UserModel(email=email, name=name,password=make_password(password),re_password=make_password(re_password))
 
             user.save()
+            try:
+
+                emaill = EmailMessage('Activation Link', ' HEY...Welcome To CHANGE.IO ....'
+                                                         '.click on the link below to get your account activated \n\n '
+                                                         'http://127.0.0.1:8000/activate/?username=' + make_password(name),
+                                      to=[email])
+                emaill.send()
+                print "email send"
+            except:
+                print ' network error in sending the mail'
+
             print ' user saved'
-            return render(request, 'login.html')
+            return redirect('/login/')
         else:
             print ' form invalid'
     elif request.method == "GET":
@@ -53,14 +65,13 @@ def login_user(request):
         form = LoginForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            user = UserModel.objects.filter(username=username).first()
+            user = UserModel.objects.filter(email=email).first()
             try:
-                email = form.cleaned_data.get('email')
-                emaill = EmailMessage('Activation Link', ' HEY...You just signed Up for CHANGE.IO ....'
-                                                         '.click on the link below to get your account activated \n\n '
-                                                         'http://127.0.0.1:8000/activate/?username=' + (username),
+
+                emaill = EmailMessage('You just Logged in...', ' HEY...You just Logged in on for CHANGE.IO ....Report if it was not you'
+                                                         ,
                                       to=[email])
                 emaill.send()
                 print "email send"
