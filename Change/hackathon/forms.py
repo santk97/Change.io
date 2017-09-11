@@ -1,8 +1,7 @@
-
-
 from django import forms
 
-from models import UserModel, swatch_UserModel, feedback_model
+from models import PostModel
+from models import UserModel, swatch_UserModel, feedback_model, CommentModel
 from models import startmodel
 
 
@@ -20,6 +19,10 @@ class LoginForm(forms.ModelForm):
       fields = ['email', 'password']
 
 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = PostModel
+        fields = ['image', 'caption']
 class Startform(forms.ModelForm):
     class Meta:
         model=startmodel
@@ -35,8 +38,10 @@ class swatch_LoginForm(forms.ModelForm):
       model = swatch_UserModel
       fields = ['email', 'password']
 
-
-
+class CommentForm(forms.ModelForm):
+  class Meta:
+    model = CommentModel
+    fields = ['comment_text', 'post']
 
 class feedback_form(forms.ModelForm):
     class Meta:
@@ -47,4 +52,3 @@ class password_form(forms.ModelForm):
     class Meta:
         model=UserModel
         fields=['password','re_password']
-

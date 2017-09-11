@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
 import os
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
 from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from imgurpython import ImgurClient
 from twilio.rest import Client
 
 
-from forms import LoginForm, SignUpForm, swatch_signform, swatch_LoginForm, feedback_form, password_form
-from forms import Startform
 
-from models import UserModel, SessionToken, startmodel, swatch_UserModel, feedback_model
+from forms import Startform
+from models import startmodel
+
+
+from forms import CommentForm,PostForm
+from models import PostModel, CommentModel
+
+from forms import LoginForm, SignUpForm, swatch_signform , swatch_LoginForm ,feedback_form , password_form
+from models import UserModel, SessionToken, swatch_UserModel,feedback_model
+
+
+
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -21,7 +32,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 account_sid = "ACcee93f758892db32f0920ab88b1ca945"
 auth_token = "144914bd933e248294d546ae74479862"
 client = Client(account_sid, auth_token)
-
+postive=["beautiful","clean","Hygenic"]
+negative=["pollution","dirty","unhygenic","unsafe"]
 
 
 def index(request):
@@ -312,6 +324,7 @@ def dashboard(request):
     return render(request,'dashboard.html',{'user':user_now})
 
 
+
 def feedback(request):
     print 'feedback called'
     user=check_validation(request)
@@ -383,3 +396,80 @@ def password(request):
         print ' user is invalid'
         return HttpResponseRedirect('/login/')
     return render(request,'password.html')
+
+def post_view(request):
+        user = check_validation(request)
+        print "post view called"
+        if user:
+            print 'Authentic user'
+            # if request.METHOD == 'GET':
+            #   form = PostForm()
+            if request.method == 'POST':
+                print 'post called'
+                form = PostForm(request.POST, request.FILES)
+                print form
+                if form.is_valid():
+                    print 'form is valid'
+                    image = form.cleaned_data['image']
+                    caption = form.cleaned_data['caption']
+                    print user
+                    print image
+                    print caption
+                    print BASE_DIR
+                    print "before basedr"
+                    post = PostModel(user=user, image=image, caption=caption)
+                    post.save()
+                    path = (r'C:/Users/ROADBLOCK/Desktop/user_images' + '/' + post.image.url)
+                    print "after basedr"
+                    print path
+                    client = ImgurClient(CLIENT_ID, CLIENT_SECRET)
+                    post.image_url = client.upload_from_path(path, anon=True)['link']
+                    post.save()
+                    redirect('/feed/')
+                else:
+                    print ' form is invalid '
+
+            else:
+                print ' get is called'
+                form = PostForm()
+                print form
+                # return (request,'upload.html')
+        else:
+            return redirect('/login/')
+        return render(request, 'upload.html')
+
+
+def swach(requests):
+    user = check_validation(requests)
+    if user:
+        url = "http://cl-api.vize.ai/2399"
+        files = {'image': open("test6.jpg", 'rb')}  # use path to your image
+
+        headers = {
+            "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjIzNTAsImlhdCI6MTUwNDkzNDM2MSwiZXhwIjoxNTEyNzEwMzYxfQ.iMIAMhM-D8KUSzoEJLm8EQm0pdVunbHeOeOrkYIhmzg"}
+
+        response = requests.request("POST", url, files=files, headers=headers)
+        print(response.text)
+        json_data = json.loads(response.text)
+        print json_data["cached"]
+
+
+
+def comment_view(request):
+    user = check_validation(request)
+    if user and request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            post_id = form.cleaned_data.get('post').id
+            comment_text = form.cleaned_data.get('comment_text')
+            comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
+            comment.save()
+            email = EmailMessage('NEW COMMENT ', ' New Comment on  post', to=['vaidishan9@gmail.com'])
+            email.send()
+
+            return redirect('/feed/')
+        else:
+            return redirect('/feed/')
+    else:
+        return redirect('/login')
+
