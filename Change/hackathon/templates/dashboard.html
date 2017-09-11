@@ -204,6 +204,8 @@ Your browser does not support the video tag.
                <p><strong>98% </strong>funded</p>
             <p><strong>4days </strong> to go</p>
                    </div>
+                    <form method="POST" action="/like/">
+              {% csrf_token %}
              <div class="col-md-6">
                 <a><p><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote</p></a> 
                  <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote</p></a>

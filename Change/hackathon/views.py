@@ -8,7 +8,7 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
-from forms import LoginForm, SignUpForm
+from forms import LoginForm, SignUpForm,
 from models import UserModel, SessionToken
 
 CLIENT_ID='2e8b96d3df82469'

@@ -34,3 +34,4 @@ class project_model(models.Model):
     project_name=models.CharField(max_length=400)
 
 
+class dashboard_model(models.Model):
