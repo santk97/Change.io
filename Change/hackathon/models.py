@@ -15,7 +15,7 @@ class UserModel(models.Model):
   updated_on = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-       return self.email
+       return self.name
 
 
 # post model
@@ -28,7 +28,8 @@ class SessionToken(models.Model):
 
     def create_token(self):
         self.session_token = uuid.uuid4()
-
+    def __str__(self):
+        return self.user
 
 class project_model(models.Model):
     project_name=models.CharField(max_length=400)
@@ -38,6 +39,7 @@ class indexmodel(models.Model):
     last_name=models.CharField(max_length=200)
 
 
+<<<<<<< HEAD
 class startmodel(models.Model):
 
     
@@ -47,3 +49,17 @@ class startmodel(models.Model):
     description=models.CharField(max_length=400)
     def __str__(self):
         return self.name
+=======
+class swatch_UserModel(models.Model):
+  email = models.EmailField()
+  name = models.CharField(max_length=120)
+  password = models.CharField(max_length=400)
+  re_password = models.CharField(max_length=400)
+
+  created_on = models.DateTimeField(auto_now_add=True)
+  updated_on = models.DateTimeField(auto_now=True)
+
+  def __str__(self):
+       return self.email
+
+>>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de

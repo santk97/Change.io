@@ -5,9 +5,11 @@ import os
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
+from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
+<<<<<<< HEAD
 
 from forms import LoginForm, SignUpForm
 from models import UserModel, SessionToken
@@ -15,6 +17,10 @@ from models import UserModel, SessionToken
 from forms import LoginForm, SignUpForm,Indexform1,Startform
 from models import UserModel, SessionToken,indexmodel,startmodel
 
+=======
+from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
+from models import UserModel, SessionToken,indexmodel , swatch_UserModel
+>>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -66,29 +72,32 @@ def activate(request):
         #name=request.GET.get('name')
         print email
         #print name
-        user_object = UserModel.objects.filter(email=email)
-        print user_object
-        #print user_obj.name
-        #print user_obj.email
-        #print user_obj.is_active
-        # changing the is active field to true for activated users
-        if user_object:
-            if user_object.is_active == False:
-                user_object.is_active = True
-                print 'user has been activated'
-                user_object.save()
-                redirect('/login/')
+        user_object = UserModel.objects.filter(email=email).all()
+        print user_object.first()
+        user_obj= user_object.first()
+        try:
+            print  user_obj.name ,  user_obj.is_active
+
+            if user_object:
+                if user_obj.is_active == False:
+                    user_obj.is_active = True
+                    print 'user has been activated'
+                    user_obj.save()
+                    return HttpResponseRedirect('/login/')
+                else:
+                    print ' user has been alreay activated'
+                    return HttpResponseRedirect('/login/')
             else:
-                print ' user has been alreay activated'
-        else:
-            print ' no user returned'
+                print ' no user returned'
+        except:
+            pass
         return render(request, 'login.html',)
 
 
 # login function
 
 def login_user(request):
-    print 'loin page called'
+    print 'login page called'
     response_data = {}
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -118,7 +127,9 @@ def login_user(request):
                         token = SessionToken(user=user)
                         token.create_token()
                         token.save()
-                        response = redirect('/index/')
+                        print 'token saved'
+                        response = HttpResponseRedirect('/dashboard/')
+                        print 'redirected to ',response
                         response.set_cookie(key='session_token', value=token.session_token)
                         return response
                     else:
@@ -178,6 +189,7 @@ def indexview1(request):
         form = Indexform1()
     return render(request, 'index.html', {'form': form})
 
+<<<<<<< HEAD
 def logout_view(request):
     user=check_validation(request)
     if user:
@@ -217,6 +229,103 @@ def start_view(request):
     elif request.method == 'GET':
         form = Indexform1()
     return render(request, 'startproject.html', {'form': form})
+=======
+def swatchh_signup(request):
+    print ' swatchh signup view called'
+    if request.method == "POST":
+        print ' post called'
+        form = swatch_signform(request.POST)
+        if form.is_valid():
+            print ' form is valid'
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            re_password = form.cleaned_data['re_password']
+            print name, email
+            user = swatch_UserModel(email=email, name=name, password=make_password(password),
+                             re_password=make_password(re_password))
+           
+            user.save()
+            try:
+
+                emaill = EmailMessage('Activation Link', ' HEY...Welcome To Swatch Bharat Abhiyan....',to=[email])
+                emaill.send()
+                print "email send"
+            except:
+                print ' network error in sending the mail'
+
+            print ' user saved'
+            return HttpResponseRedirect('/swatchh_login/')
+        else:
+            print ' form invalid'
+    elif request.method == "GET":
+        print ' get called'
+        form = SignUpForm()
+
+    return render(request , 'signup_swachh.html')
+
+def swatch_login(request):
+    print 'swatchh loin page called'
+    response_data = {}
+    if request.method == "POST":
+        form = swatch_LoginForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = swatch_UserModel.objects.filter(email=email).first()
+            if user:
+                if user.is_active == True:
+                    # message.send()
+
+                    # Check for the password
+                    if check_password(password, user.password):
+                        print 'User is valid'
+                        try:
+
+                            emaill = EmailMessage('You just Logged in...',
+                                                  ' HEY...You just Logged in on for Swatch Bhrata Initiative ....Report if it was not you'
+                                                  ,
+                                                  to=[email])
+                            emaill.send()
+                            print "email send"
+                        except:
+                            print ' network error in sending the mail'
+
+                        token = SessionToken(user=user)
+                        token.create_token()
+                        token.save()
+                        response = redirect('/index/')
+                        response.set_cookie(key='session_token', value=token.session_token)
+                        return response
+                    else:
+                        print 'User is invalid'
+                        response_data['message'] = 'Incorrect Password! Please try again!'
+            else:
+                print 'user has not been activated'
+                response_data['message'] = 'You have not been activated ...Please check your mail!'
+    elif request.method == "GET":
+        form = swatch_LoginForm()
+
+    response_data['form'] = form
+
+    return render(request,'login_swachh.html',response_data)
+
+
+def dashboard(request):
+    print 'dashboard called'
+    user = check_validation(request)
+    print 'vakidation returned',user
+    if user:
+        # if user is valid getting all the posts from the user
+        print 'authentic user'
+
+        user_now = UserModel.objects.filter(name=user).first()
+        print 'welcome', user_now
+    else :
+        return HttpResponseRedirect('/login/')
+    return render(request,'dashboard.html',{'user':user_now})
+>>>>>>> 44c8bef70f1b64cbc791b5e394caef27d71b82de
 
 
 
