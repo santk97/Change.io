@@ -61,22 +61,28 @@ def activate(request):
         #name=request.GET.get('name')
         print email
         #print name
-        user_object = UserModel.objects.filter(email=email)
-        print user_object
+        user_object = UserModel.objects.filter(email=email).all()
+        print user_object.first()
+        user_obj= user_object.first()
+        try:
+            print  user_obj.name ,  user_obj.is_active
         #print user_obj.name
         #print user_obj.email
         #print user_obj.is_active
         # changing the is active field to true for activated users
-        if user_object:
-            if user_object.is_active == False:
-                user_object.is_active = True
-                print 'user has been activated'
-                user_object.save()
-                redirect('/login/')
+            if user_object:
+                if user_obj.is_active == False:
+                    user_obj.is_active = True
+                    print 'user has been activated'
+                    user_obj.save()
+                    return render(request,'login.html')
+                else:
+                    print ' user has been alreay activated'
+                    return render(request,'login.html')
             else:
-                print ' user has been alreay activated'
-        else:
-            print ' no user returned'
+                print ' no user returned'
+        except:
+            pass
         return render(request, 'login.html',)
 
 
