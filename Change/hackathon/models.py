@@ -15,7 +15,7 @@ class UserModel(models.Model):
   updated_on = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-       return self.email
+       return self.name
 
 
 # post model
@@ -28,7 +28,8 @@ class SessionToken(models.Model):
 
     def create_token(self):
         self.session_token = uuid.uuid4()
-
+    def __str__(self):
+        return self.user
 
 class project_model(models.Model):
     project_name=models.CharField(max_length=400)

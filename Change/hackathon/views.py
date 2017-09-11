@@ -87,7 +87,7 @@ def activate(request):
 # login function
 
 def login_user(request):
-    print 'loin page called'
+    print 'login page called'
     response_data = {}
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -117,7 +117,9 @@ def login_user(request):
                         token = SessionToken(user=user)
                         token.create_token()
                         token.save()
-                        response = redirect('/index/')
+                        print 'token saved'
+                        response = HttpResponseRedirect('/dashboard/')
+                        print 'redirected to ',response
                         response.set_cookie(key='session_token', value=token.session_token)
                         return response
                     else:
@@ -257,6 +259,21 @@ def swatch_login(request):
     response_data['form'] = form
 
     return render(request,'login_swachh.html',response_data)
+
+
+def dashboard(request):
+    print 'dashboard called'
+    user = check_validation(request)
+    print 'vakidation returned',user
+    if user:
+        # if user is valid getting all the posts from the user
+        print 'authentic user'
+
+        user_now = UserModel.objects.filter(name=user).first()
+        print 'welcome', user_now
+    else :
+        return HttpResponseRedirect('/login/')
+    return render(request,'dashboard.html',{'user':user_now})
 
 
 
