@@ -8,8 +8,13 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
+<<<<<<< HEAD
 from forms import LoginForm, SignUpForm,
 from models import UserModel, SessionToken
+=======
+from forms import LoginForm, SignUpForm,Indexform1
+from models import UserModel, SessionToken,indexmodel
+>>>>>>> 2b29dbc95666c9074af03ba3cedcf0c5536524d6
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -38,7 +43,7 @@ def singnup_view(request):
 
                 emaill = EmailMessage('Activation Link', ' HEY...Welcome To CHANGE.IO ....'
                                                          '.click on the link below to get your account activated \n\n '
-                                                         'http://127.0.0.1:8000/activate/?email=' +(email),
+                                                         'http://127.0.0.1:8000/activate/?email=' +email,
                                       to=[email])
                 emaill.send()
                 print "email send"
@@ -58,21 +63,25 @@ def activate(request):
 
         print 'Activate called'
         email = request.GET.get('email')
+        #name=request.GET.get('name')
         print email
-        user_obj = UserModel.objects.filter(email=email).first()
-        print user_obj
+        #print name
+        user_object = UserModel.objects.filter(email=email)
+        print user_object
         #print user_obj.name
-        print user_obj.email
-        print user_obj.is_active
+        #print user_obj.email
+        #print user_obj.is_active
         # changing the is active field to true for activated users
-        if user_obj.is_active == False:
-            user_obj.is_active = True
-            print 'user has been activated'
-            user_obj.save()
-            redirect('/login/')
+        if user_object:
+            if user_object.is_active == False:
+                user_object.is_active = True
+                print 'user has been activated'
+                user_object.save()
+                redirect('/login/')
+            else:
+                print ' user has been alreay activated'
         else:
-            print ' user has been alreay activated'
-
+            print ' no user returned'
         return render(request, 'login.html',)
 
 

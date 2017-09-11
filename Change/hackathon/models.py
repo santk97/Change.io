@@ -15,7 +15,7 @@ class UserModel(models.Model):
   updated_on = models.DateTimeField(auto_now=True)
 
   def __str__(self):
-       return self.name
+       return self.email
 
 
 # post model
@@ -32,6 +32,10 @@ class SessionToken(models.Model):
 
 class project_model(models.Model):
     project_name=models.CharField(max_length=400)
+
+class indexmodel(models.Model):
+    first_name=models.CharField(max_length=200)
+    last_name=models.CharField(max_length=200)
 
 
 class dashboard_model(models.Model):
