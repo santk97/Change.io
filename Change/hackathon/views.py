@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from models import UserModel,SessionToken,indexmodel
-from forms import LoginForm,SignUpForm,Indexform1
-from django.contrib.auth.hashers import make_password,check_password
-from django.shortcuts import render,redirect
 import os
-from datetime import timedelta
-from django.utils import timezone
+
+from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
+from django.shortcuts import render, redirect
 from twilio.rest import Client
+
+from forms import LoginForm, SignUpForm
+from models import UserModel, SessionToken
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -33,13 +32,13 @@ def singnup_view(request):
             re_password = form.cleaned_data['re_password']
             print name , email
             user = UserModel(email=email, name=name,password=make_password(password),re_password=make_password(re_password))
-
+            user.is_active=False
             user.save()
             try:
 
                 emaill = EmailMessage('Activation Link', ' HEY...Welcome To CHANGE.IO ....'
                                                          '.click on the link below to get your account activated \n\n '
-                                                         'http://127.0.0.1:8000/activate/?username=' + make_password(name),
+                                                         'http://127.0.0.1:8000/activate/?email=' +(email),
                                       to=[email])
                 emaill.send()
                 print "email send"
@@ -47,13 +46,34 @@ def singnup_view(request):
                 print ' network error in sending the mail'
 
             print ' user saved'
-            return redirect('/login/')
+            return render(request, 'activate_link.html')
         else:
             print ' form invalid'
     elif request.method == "GET":
         print ' get called'
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
+
+def activate(request):
+
+        print 'Activate called'
+        email = request.GET.get('email')
+        print email
+        user_obj = UserModel.objects.filter(email=email).first()
+        print user_obj
+        #print user_obj.name
+        print user_obj.email
+        print user_obj.is_active
+        # changing the is active field to true for activated users
+        if user_obj.is_active == False:
+            user_obj.is_active = True
+            print 'user has been activated'
+            user_obj.save()
+            redirect('/login/')
+        else:
+            print ' user has been alreay activated'
+
+        return render(request, 'login.html',)
 
 
 # login function
@@ -68,31 +88,36 @@ def login_user(request):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             user = UserModel.objects.filter(email=email).first()
-            try:
-
-                emaill = EmailMessage('You just Logged in...', ' HEY...You just Logged in on for CHANGE.IO ....Report if it was not you'
-                                                         ,
-                                      to=[email])
-                emaill.send()
-                print "email send"
-            except:
-                print ' network error in sending the mail'
-
-
-            # message.send()
             if user:
+                 if user.is_active==True:
+            # message.send()
+
                 # Check for the password
-                if check_password(password, user.password):
-                    print 'User is valid'
-                    token = SessionToken(user=user)
-                    token.create_token()
-                    token.save()
-                    response = redirect('/index/')
-                    response.set_cookie(key='session_token', value=token.session_token)
-                    return response
-                else:
-                    print 'User is invalid'
-                    response_data['message'] = 'Incorrect Password! Please try again!'
+                    if check_password(password, user.password):
+                        print 'User is valid'
+                        try:
+
+                            emaill = EmailMessage('You just Logged in...',
+                                              ' HEY...You just Logged in on for CHANGE.IO ....Report if it was not you'
+                                              ,
+                                              to=[email])
+                            emaill.send()
+                            print "email send"
+                        except:
+                            print ' network error in sending the mail'
+
+                        token = SessionToken(user=user)
+                        token.create_token()
+                        token.save()
+                        response = redirect('/index/')
+                        response.set_cookie(key='session_token', value=token.session_token)
+                        return response
+                    else:
+                        print 'User is invalid'
+                        response_data['message'] = 'Incorrect Password! Please try again!'
+            else:
+                print 'user has not been activated'
+                response_data['message'] = 'You have not been activated ...Please check your mail!'
     elif request.method == "GET":
         form = LoginForm()
 

@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from views import singnup_view,indexview1,login_user,logout_view
+from views import singnup_view,indexview1,login_user,logout_view,activate
 
 urlpatterns = [
     url(r'^$', indexview1),
@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^index/',indexview1),
     url(r'^login/',login_user),
     url(r'^logout/',logout_view),
+url(r'^activate/',activate),
 ]
