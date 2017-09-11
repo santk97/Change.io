@@ -1,4 +1,4 @@
-from models import UserModel,project_model , indexmodel
+from models import UserModel,project_model , indexmodel ,swatch_UserModel
 from django import forms
 
 class SignUpForm(forms.ModelForm):
@@ -16,3 +16,8 @@ class LoginForm(forms.ModelForm):
     class Meta:
       model = UserModel
       fields = ['email', 'password']
+
+class swatch_signform(forms.ModelForm):
+    class Meta:
+        model=swatch_UserModel
+        fields = ['email', 'name', 'password', 're_password']

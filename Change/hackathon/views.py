@@ -5,11 +5,12 @@ import os
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
+from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
-from forms import LoginForm, SignUpForm,Indexform1
-from models import UserModel, SessionToken,indexmodel
+from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform
+from models import UserModel, SessionToken,indexmodel , swatch_UserModel
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -66,19 +67,16 @@ def activate(request):
         user_obj= user_object.first()
         try:
             print  user_obj.name ,  user_obj.is_active
-        #print user_obj.name
-        #print user_obj.email
-        #print user_obj.is_active
-        # changing the is active field to true for activated users
+
             if user_object:
                 if user_obj.is_active == False:
                     user_obj.is_active = True
                     print 'user has been activated'
                     user_obj.save()
-                    return render(request,'login.html')
+                    return HttpResponseRedirect('/login/')
                 else:
                     print ' user has been alreay activated'
-                    return render(request,'login.html')
+                    return HttpResponseRedirect('/login/')
             else:
                 print ' no user returned'
         except:
@@ -178,5 +176,40 @@ def indexview1(request):
     elif request.method == 'GET':
         form = Indexform1()
     return render(request, 'index.html', {'form': form})
+
+def swatchh_signup(request):
+    print ' swatchh signup view called'
+    if request.method == "POST":
+        print ' post called'
+        form = swatch_signform(request.POST)
+        if form.is_valid():
+            print ' form is valid'
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            re_password = form.cleaned_data['re_password']
+            print name, email
+            user = swatch_UserModel(email=email, name=name, password=make_password(password),
+                             re_password=make_password(re_password))
+           
+            user.save()
+            try:
+
+                emaill = EmailMessage('Activation Link', ' HEY...Welcome To Swatch Bharat Abhiyan....',to=[email])
+                emaill.send()
+                print "email send"
+            except:
+                print ' network error in sending the mail'
+
+            print ' user saved'
+            return render(request, 'login.html')
+        else:
+            print ' form invalid'
+    elif request.method == "GET":
+        print ' get called'
+        form = SignUpForm()
+
+    
+    return request(request,'signup_swatchh.html')
 
 

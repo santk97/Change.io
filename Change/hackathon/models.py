@@ -38,3 +38,15 @@ class indexmodel(models.Model):
     last_name=models.CharField(max_length=200)
 
 
+class swatch_UserModel(models.Model):
+  email = models.EmailField()
+  name = models.CharField(max_length=120)
+  password = models.CharField(max_length=400)
+  re_password = models.CharField(max_length=400)
+
+  created_on = models.DateTimeField(auto_now_add=True)
+  updated_on = models.DateTimeField(auto_now=True)
+
+  def __str__(self):
+       return self.email
+
