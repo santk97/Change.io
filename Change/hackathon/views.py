@@ -9,7 +9,7 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
-from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform
+from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
 from models import UserModel, SessionToken,indexmodel , swatch_UserModel
 
 CLIENT_ID='2e8b96d3df82469'
@@ -202,14 +202,61 @@ def swatchh_signup(request):
                 print ' network error in sending the mail'
 
             print ' user saved'
-            return render(request, 'login.html')
+            return HttpResponseRedirect('/swatchh_login/')
         else:
             print ' form invalid'
     elif request.method == "GET":
         print ' get called'
         form = SignUpForm()
 
-    
-    return request(request,'signup_swatchh.html')
+    return render(request , 'signup_swachh.html')
+
+def swatch_login(request):
+    print 'swatchh loin page called'
+    response_data = {}
+    if request.method == "POST":
+        form = swatch_LoginForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = swatch_UserModel.objects.filter(email=email).first()
+            if user:
+                if user.is_active == True:
+                    # message.send()
+
+                    # Check for the password
+                    if check_password(password, user.password):
+                        print 'User is valid'
+                        try:
+
+                            emaill = EmailMessage('You just Logged in...',
+                                                  ' HEY...You just Logged in on for Swatch Bhrata Initiative ....Report if it was not you'
+                                                  ,
+                                                  to=[email])
+                            emaill.send()
+                            print "email send"
+                        except:
+                            print ' network error in sending the mail'
+
+                        token = SessionToken(user=user)
+                        token.create_token()
+                        token.save()
+                        response = redirect('/index/')
+                        response.set_cookie(key='session_token', value=token.session_token)
+                        return response
+                    else:
+                        print 'User is invalid'
+                        response_data['message'] = 'Incorrect Password! Please try again!'
+            else:
+                print 'user has not been activated'
+                response_data['message'] = 'You have not been activated ...Please check your mail!'
+    elif request.method == "GET":
+        form = swatch_LoginForm()
+
+    response_data['form'] = form
+
+    return render(request,'login_swachh.html',response_data)
+
 
 

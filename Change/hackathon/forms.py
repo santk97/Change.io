@@ -21,3 +21,8 @@ class swatch_signform(forms.ModelForm):
     class Meta:
         model=swatch_UserModel
         fields = ['email', 'name', 'password', 're_password']
+
+class swatch_LoginForm(forms.ModelForm):
+    class Meta:
+      model = swatch_UserModel
+      fields = ['email', 'password']
