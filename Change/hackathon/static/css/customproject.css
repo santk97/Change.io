@@ -1,0 +1,44 @@
+body{
+        font-family: 'Quicksand', sans-serif;
+}
+
+.header{
+background-image:url("../img/blur.jpeg");
+height: 550px;
+margin-top: 0px;
+text-align: center;
+}
+.header-heading{
+        position: absolute;
+    left: 29%;
+    top: 15%;
+    color: floralwhite;
+}
+.brand-name2{
+    color:#5BB12f;
+}
+.button-project{
+    position: absolute;
+    left: 44%;
+    top: 22%;
+}
+.diff-tabs{
+    position: absolute;
+    left: 28%;
+    top: 30%;
+}
+
+.header-content{
+    text-align: center;
+}
+a{
+    color: floralwhite;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+    color: #fff;
+    background-color: #5BB12f;
+}
+ h4{
+        line-height: 25px;
+    }

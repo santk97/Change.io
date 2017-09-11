@@ -55,7 +55,10 @@ li.text{
     margin-top: 90px;
     margin-bottom: 90px;
 }
-
+.profile-pic-nav {
+    width: 30px;
+    margin-right: 15px;
+}
 @media(max-width:500px){
     .about{
         margin-top: 70px;
