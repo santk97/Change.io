@@ -1,4 +1,4 @@
-from models import UserModel,project_model , indexmodel ,swatch_UserModel
+from models import UserModel,project_model , indexmodel ,swatch_UserModel , feedback_model
 from django import forms
 
 class SignUpForm(forms.ModelForm):
@@ -26,3 +26,8 @@ class swatch_LoginForm(forms.ModelForm):
     class Meta:
       model = swatch_UserModel
       fields = ['email', 'password']
+
+class feedback_form(forms.ModelForm):
+    class Meta:
+        model=feedback_model
+        fields=['first_name','last_name','subject']
