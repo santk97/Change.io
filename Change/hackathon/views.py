@@ -5,27 +5,15 @@ import os
 
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.mail import EmailMessage
-from django.shortcuts import HttpResponse, HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
 
+from forms import LoginForm, SignUpForm, swatch_signform, swatch_LoginForm, feedback_form, password_form
+from forms import Startform
 
-
-from forms import LoginForm, SignUpForm
-from models import UserModel, SessionToken
-
-from forms import LoginForm, SignUpForm,Indexform1,Startform
-from models import UserModel, SessionToken,indexmodel,startmodel
-
-
-from forms import LikeForm,LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
-from models import LikeModel,UserModel, SessionToken,indexmodel , swatch_UserModel
-
-
-from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
-from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
-
+from models import UserModel, SessionToken, startmodel, swatch_UserModel, feedback_model
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -35,6 +23,9 @@ auth_token = "144914bd933e248294d546ae74479862"
 client = Client(account_sid, auth_token)
 
 
+
+def index(request):
+    return render('index.html')
 
 def singnup_view(request):
     print ' signup view called'
@@ -169,31 +160,7 @@ def logout_view(request):
         return redirect('/login/')
 
 
-# Create your views here.
-def indexview1(request):
-    if request.method == 'POST':
-        form = Indexform1(request.POST)
-        if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name= form.cleaned_data['last_name']
-            #subject = form.cleaned_data['subject']
-            user = indexmodel(first_name=first_name,last_name=last_name)
-            user.save()
-            try:
-                #email = form.cleaned_data.get('email')
-                emaill = EmailMessage('Feedback', 'New suggestion form' + (first_name),
-                                      to=['instacloneapp@gmail.com'])
-                emaill.send()
-                print "email send"
-            except:
-                print ' network error in sending the mail'
 
-            return render(request, 'index.html')
-        else:
-            print " "
-    elif request.method == 'GET':
-        form = Indexform1()
-    return render(request, 'index.html', {'form': form})
 
 
 def logout_view(request):
@@ -207,35 +174,46 @@ def logout_view(request):
 
 
 def start_view(request):
+    user=check_validation(request)
+    if user:
+        print 'user is valid'
+        if request.method == 'POST':
+            form = Startform(request.POST)
+            if form.is_valid():
+                print 'form is valid for new project'
+                name = form.cleaned_data['name']
+                sex= form.cleaned_data['sex']
+                age=form.cleaned_data['age']
+                theme=form.cleaned_data['theme']
+                link=form.cleaned_data['link']
+                description=form.cleaned_data['description']
+                country=form.cleaned_data['country']
+                print name , sex , age , theme , country , link, description
+                user = startmodel(name=name,sex=sex,age=age,theme=theme,country=country,link=link,description=description)
+                user.save()
+                user_obj = UserModel.objects.filter(name=user).first()
+                print 'user details'
+                print user_obj
+                print user_obj.email
+                print ' project details stored'
+                #try:
 
-    if request.method == 'POST':
-        form = Startform(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            sex= form.cleaned_data['sex']
-            age=form.cleaned_data['age']
-            theme=form.cleaned_data['theme']
-            link=form.cleaned_data['link']
-            description=form.cleaned_data['desccription']
-            country=form.cleaned_data['country']
-            #subject = form.cleaned_data['subject']
-            user = indexmodel(name=name,sex=sex,age=age,theme=theme,country=country,link=link,description=description)
-            user.save()
-            try:
-                #email = form.cleaned_data.get('email')
-                emaill = EmailMessage('New project', 'New project created' + (name),
-                                      to=['instacloneapp@gmail.com'])
+                emaill = EmailMessage('New project request', 'A User has requested for a new project please verify and create'
+                                                                 '\n\nName:'+name +'\nSex:'+sex+'\nAge:'+str(age)+'\n theme: '+theme+''
+                                                                '\n Country:'+country+'\nlink:'+link+'\n\ndescription'+description+'Please verify and notify the user at '+user_obj.email+'\n\nthanks' ,
+                                      to=['santk97@gmail.com'])
                 emaill.send()
                 print "email send to developer"
-            except:
-                print ' network error in sending the mail to developer'
+                #except:
+                    #print ' network error in sending the mail to developer'
 
-            return render(request, 'dashboard.html')
-        else:
-            print " "
-    elif request.method == 'GET':
-        form = Indexform1()
-    return render(request, 'startproject.html', {'form': form})
+                return HttpResponseRedirect( '/dashboard/')
+            else:
+                print form.errors
+                print " form is invalid for new project"
+        elif request.method == 'GET':
+            form = Startform()
+    return render(request, 'startproject.html', {'form': form,'user':user.name})
 
 def swatchh_signup(request):
     print ' swatchh signup view called'
@@ -333,27 +311,6 @@ def dashboard(request):
         return HttpResponseRedirect('/login/')
     return render(request,'dashboard.html',{'user':user_now})
 
-def like_view(request):
-    user = check_validation(request)
-    if user and request.method == 'POST':
-        form = LikeForm(request.POST)
-        if form.is_valid():
-            post_id = form.cleaned_data.get('post').id
-
-            existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
-
-            if not existing_like:
-                LikeModel.objects.create(post_id=post_id, user=user)
-                email = EmailMessage('POSTLIKE', 'New Like on post', to=['instacloneapp@gmail.com'])
-                email.send()
-            else:
-                existing_like.delete()
-
-            return redirect('/feed/')
-
-    else:
-        return redirect('/login/')
-
 
 def feedback(request):
     print 'feedback called'
@@ -426,6 +383,3 @@ def password(request):
         print ' user is invalid'
         return HttpResponseRedirect('/login/')
     return render(request,'password.html')
-
-
-

@@ -34,9 +34,9 @@ class SessionToken(models.Model):
 class project_model(models.Model):
     project_name=models.CharField(max_length=400)
 
-class indexmodel(models.Model):
-    first_name=models.CharField(max_length=200)
-    last_name=models.CharField(max_length=200)
+
+
+
 
 class feedback_model(models.Model):
     first_name = models.CharField(max_length=200)
@@ -45,10 +45,8 @@ class feedback_model(models.Model):
 
 
 class startmodel(models.Model):
-
-    
     name=models.CharField(max_length=400)
-    age=models.IntegerField(max_length=2)
+    age=models.IntegerField()
     link=models.URLField()
     country=models.CharField(max_length=400)
     theme=models.CharField(max_length=400)
@@ -69,8 +67,4 @@ class swatch_UserModel(models.Model):
   def __str__(self):
        return self.email
 
-class LikeModel(models.Model):
-    user = models.ForeignKey(UserModel)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
 
