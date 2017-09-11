@@ -7,7 +7,6 @@
     <!-- The aboveIo 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Change.Io</title>
 
-
     <!-- Bootstrap -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom css files -->
@@ -56,11 +55,11 @@
       </ul>
     
             <ul class="nav navbar-nav navbar-right">
-                <li class="" ><a href="#"class="white animated slideInLeft"style="padding:11px 15px 0 15px;"><img class="profile-pic-nav"src="../static/img/people.png">{{ user}}</a></li>
-        <li class="text" ><a href="/startproject/"class="white animated slideInLeft"style="padding:16px 15px 0 15px;">Start Project</a></li>
+                <li class="" ><a href="#"class="white animated slideInLeft"style="padding:11px 15px 0 15px;"><img class="profile-pic-nav"src="../static/img/people.png">User Name</a></li>
+        <li class="text" ><a href="startproject.html"class="white animated slideInLeft"style="padding:16px 15px 0 15px;">Start Project</a></li>
 <li class="dropdown "><a class="dropdown-toggle white animated slideInLeft" data-toggle="dropdown" href="#">Settings<span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="/password/">Change Password</a></li>
+          <li><a href="password.html">Change Password</a></li>
                       <li data-toggle="modal" data-target="#editpic"><a href="#">Edit Profile Pic</a></li>
           <li><a href="#">Log Out</a></li>
         </ul>
@@ -185,13 +184,12 @@ Your browser does not support the video tag.
           <h1 id="team-heading">What's Popular</h1>
           <h3 id="team-features">Our Own Star Project's</h3>
           </center>
-<form>
       <div class="row team-content">
        <div class="col-md-4">
           <img class="img-size hvr-grow" src="../static/img/swach-project.jpg">
-
+          
            <div class="info-box">
-            <h3 class="bold">Swach Bharat Abhiyan</h3>
+           <a href="swachhbharat.html"><h3 class="bold">Swach Bharat Abhiyan</h3></a> 
               <h5 class="designation">Social Issues</h5>
            <p>Swachh Bharat Abhiyan is a campaign by the Government of India to keep the streets, roads and infrastructure of the country's, cities and towns and its rural areas clean. </p>
             <div style="display:-webkit-box;">
@@ -200,23 +198,22 @@ Your browser does not support the video tag.
                </div> 
                 <hr>
                <div class="row">
-               <form class="col-md-6">
+               <div class="col-md-6">
                 <p><strong>MX ₹ 269,850 </strong>pledged</p>
                <p><strong>98% </strong>funded</p>
             <p><strong>4days </strong> to go</p>
 
-   </form></div>
 
-             <div class="col-md-6">
 
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"  ></i> Up Vote </p></a>
 
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true" ></i> Down Vote</p></a>
-                 <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;" >Donate</button>
                    </div>
+             <div class="col-md-6">
+                <a  onClick="onClick1()"><p ><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote <span id="click1"></span></p></a>
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote 23</p></a>
+                 <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;">Donate</button>
+                   </div>
+               </div>
 
-
-                     </div>
 
            
            </div>
@@ -224,7 +221,7 @@ Your browser does not support the video tag.
         <div class="col-md-4">
           <img class="img-size hvr-grow"src="../static/img/fake-news.jpg">
              <div class="info-box">
-            <h3 class="bold">Fake News Detector</h3>
+         <a href="fake%20news.html"><h3 class="bold">Fake News Detector</h3></a>   
             <h5  class="designation">Cyber Techs.</h5>
           <p>Detect fake news sites using the power of artificial intelligence! We analyze websites to see if they are similar to known fake news sites using a neural network.</p>
 
@@ -240,8 +237,8 @@ Your browser does not support the video tag.
             <p><strong>4days </strong> to go</p>
                    </div>
              <div class="col-md-6">
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote</p></a> 
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote</p></a>
+                <a  onClick="onClick2()"><p ><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote <span id="click2"></span></p></a> 
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote 33</p></a>
                  <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;">Donate</button>
                    </div>
                </div>
@@ -250,7 +247,7 @@ Your browser does not support the video tag.
          <div class="col-md-4">
         <img class="img-size hvr-grow"src="../static/img/traffic.jpg">
                <div class="info-box">
-           <h3 class="bold">Learn to Drive</h3>
+        <a href="racegame.html"><h3 class="bold">Learn to Drive</h3></a>   
              <h5  class="designation">Public Awareness (Coming Soon)</h5>
              <p>Our idea is a gamification based system that makes following traffic rules seem as playing a game.This project is aimed at using Gamification to improve road safety.</p>
                          <div style="display:-webkit-box;">
@@ -265,8 +262,8 @@ Your browser does not support the video tag.
             <p><strong>4days </strong> to go</p>
                    </div>
              <div class="col-md-6">
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote</p></a> 
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote</p></a>
+                <a  onClick="onClick3()"><p ><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote <span id="click3"></span></p></a>
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote 1</p></a>
                  <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;">Donate</button>
                    </div>
                </div>
@@ -297,8 +294,8 @@ Your browser does not support the video tag.
             <p><strong>4days </strong> to go</p>
                    </div>
              <div class="col-md-6">
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote</p></a> 
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote</p></a>
+                <a onClick="onClick4()"><p ><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote <span id="click4"></span></p></a>
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote 22</p></a>
                  <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;">Donate</button>
                    </div>
                </div>
@@ -324,8 +321,8 @@ Your browser does not support the video tag.
             <p><strong>4days </strong> to go</p>
                    </div>
              <div class="col-md-6">
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote</p></a> 
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote</p></a>
+                <a  onClick="onClick5()"><p ><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote <span id="click5"></span></p></a> 
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote 33</p></a>
                  <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;">Donate</button>
                    </div>
                </div>
@@ -350,8 +347,8 @@ Your browser does not support the video tag.
             <p><strong>4days </strong> to go</p>
                    </div>
              <div class="col-md-6">
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote</p></a> 
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote</p></a>
+                <a  onClick="onClick6()"><p ><i class="fa fa-thumbs-up" aria-hidden="true"></i> Up Vote <span id="click6"></span></p></a>
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true"></i> Down Vote 32</p></a>
                  <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;">Donate</button>
                    </div>
                </div>
@@ -439,15 +436,14 @@ Your browser does not support the video tag.
           
     <div class="col-md-6">
           
-          <form method="post" action="/feedback/">
-              {% csrf_token %}
+          <form action="">
 
     <label for="fname">First Name</label>
-    <input type="text" id="fname" name="first_name" placeholder="Your name.." value={{ first_name }}>
+    <input type="text" id="fname" name="firstname" placeholder="Your name..">
 
     <label for="lname">Last Name</label>
-    <input type="text" id="lname" name="last_name"  placeholder="Your last name.." value={{ last_name }}>
-    <label for="subject" name="subject" value={{ subject }}>Subject</label>
+    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+    <label for="subject">Subject</label>
     <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
      <button class="post-message btn "type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
 
@@ -487,6 +483,34 @@ Your browser does not support the video tag.
       
       
       
+      <script type="text/javascript">
+    var clicks = 0;
+    function onClick1() {
+        clicks += 1;
+        document.getElementById("click1").innerHTML = clicks;
+    };
+              function onClick2() {
+        clicks += 1;
+        document.getElementById("click2").innerHTML = clicks;
+    };
+              function onClick3() {
+        clicks += 1;
+        document.getElementById("click3").innerHTML = clicks;
+    };
+              function onClick4() {
+        clicks += 1;
+        document.getElementById("click4").innerHTML = clicks;
+    };
+              function onClick5() {
+        clicks += 1;
+        document.getElementById("click5").innerHTML = clicks;
+    };
+              function onClick6() {
+        clicks += 1;
+        document.getElementById("click6").innerHTML = clicks;
+    };
+          
+    </script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
