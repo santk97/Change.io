@@ -1,9 +1,17 @@
 from django.conf.urls import url
 <<<<<<< HEAD
+<<<<<<< HEAD
 from views import start_view,singnup_view,like_view,indexview1,login_user,logout_view,activate,swatchh_signup,swatch_login,dashboard
 =======
 from views import singnup_view,indexview1,login_user,logout_view,activate,swatchh_signup,swatch_login,dashboard , feedback,password
 >>>>>>> 017072938c011466f91ed8fd437d7be2fa57aa99
+=======
+
+from views import start_view,singnup_view,like_view,indexview1,login_user,logout_view,activate,swatchh_signup,swatch_login,dashboard
+
+from views import singnup_view,indexview1,login_user,logout_view,activate,swatchh_signup,swatch_login,dashboard , feedback,password
+
+>>>>>>> f78f2113f8a142aab61192b9e59afa8c04fae288
 
 urlpatterns = [
     url(r'^$', indexview1),
@@ -18,6 +26,7 @@ urlpatterns = [
     url(r'^swatchh_signup/',swatchh_signup),
     url(r'^swatchh_login/',swatch_login),
 <<<<<<< HEAD
+<<<<<<< HEAD
     url(r'^dashboard/',dashboard)
 
 =======
@@ -25,4 +34,11 @@ urlpatterns = [
     url(r'^feedback/',feedback),
     url(r'^password/',password),
 >>>>>>> 017072938c011466f91ed8fd437d7be2fa57aa99
+=======
+   
+    url(r'^dashboard/',dashboard),
+    url(r'^feedback/',feedback),
+    url(r'^password/',password),
+
+>>>>>>> f78f2113f8a142aab61192b9e59afa8c04fae288
 ]
