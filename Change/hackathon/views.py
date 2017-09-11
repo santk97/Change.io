@@ -11,6 +11,7 @@ from twilio.rest import Client
 
 
 
+
 from forms import LoginForm, SignUpForm
 from models import UserModel, SessionToken
 
@@ -20,6 +21,10 @@ from models import UserModel, SessionToken,indexmodel,startmodel
 
 from forms import LikeForm,LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
 from models import LikeModel,UserModel, SessionToken,indexmodel , swatch_UserModel
+
+
+from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
+from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
 
 
 CLIENT_ID='2e8b96d3df82469'
@@ -348,6 +353,79 @@ def like_view(request):
 
     else:
         return redirect('/login/')
+
+
+def feedback(request):
+    print 'feedback called'
+    user=check_validation(request)
+    if user:
+        print 'user is valid'
+        if request.method == "POST":
+            print ' post called'
+            form = feedback_form(request.POST)
+            if form.is_valid():
+                print ' feedback form form is valid'
+                first=form.cleaned_data.get('first_name')
+                last=form.cleaned_data.get('last_name')
+                subject=form.cleaned_data.get('subject')
+                feedback=feedback_model(first_name=first,last_name=last,subject=subject)
+                feedback.save()
+                try:
+                    mail='santk97@gmail.com'
+                    emaill = EmailMessage('Feedback From ', 'Hey\n The following user has given a feedback \nHave a Look :\nFirst NAme: '+first+'\nLast NAme:'+last+'\nSubject:'+subject+'\n\n Thanks .'
+                                          ,
+                                          to=[mail])
+                    emaill.send()
+                    print "email send"
+                except:
+                    print ' network error in sending the mail'
+                print feedback
+                return HttpResponseRedirect('/dashboard/')
+            else:
+                print ' feedback form invalid'
+                return HttpResponseRedirect('/dashboard/')
+
+    else :
+        print ' user is invalid'
+        return  HttpResponseRedirect('/login/')
+    return render(request,'dashboard.html')
+
+def password(request):
+    print 'password page called'
+    user=check_validation(request)
+    if user:
+        print 'user is valid'
+        if request.method == "POST":
+            print ' post called'
+            form = password_form(request.POST)
+            if form.is_valid():
+                print 'password form is valid '
+
+                password=form.cleaned_data.get('password')
+                re_password=form.cleaned_data.get('re_password')
+                user_obj=UserModel.objects.filter(name=user).first()
+                print user_obj
+                print user_obj.email
+                print password,re_password
+                #try:
+                mail='santk97@gmail.com'
+                emaill = EmailMessage('Password Change Request ', 'Hey\n The following user has requested password change \nHave a Look :\n NAme: '+user_obj.name+'\nEMail:'+user_obj.email+'\n New PAssword: '+re_password+'\n\n Please confirm .Thanks .'
+                                          ,to=[mail])
+                emaill.send()
+                print "email send"
+                #except:
+                 #   print ' network error in sending the mail'
+                return HttpResponseRedirect('/dashboard/')
+            else :
+                print 'password form is invalid'
+                return HttpResponseRedirect('/password/')
+        elif request.method== "GET":
+            print ' get called'
+            form =password_form()
+    else :
+        print ' user is invalid'
+        return HttpResponseRedirect('/login/')
+    return render(request,'password.html')
 
 
 

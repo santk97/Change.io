@@ -38,6 +38,11 @@ class indexmodel(models.Model):
     first_name=models.CharField(max_length=200)
     last_name=models.CharField(max_length=200)
 
+class feedback_model(models.Model):
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
+    subject=models.TextField()
+
 
 class startmodel(models.Model):
 
