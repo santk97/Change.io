@@ -8,6 +8,10 @@ from django.core.mail import EmailMessage
 from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
+from imgurpython import ImgurClient
+import json
+import requests
+
 
 
 
@@ -19,12 +23,18 @@ from forms import LoginForm, SignUpForm,Indexform1,Startform
 from models import UserModel, SessionToken,indexmodel,startmodel
 
 
-from forms import LikeForm,LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
-from models import LikeModel,UserModel, SessionToken,indexmodel , swatch_UserModel
+from forms import CommentForm,PostForm,LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
+from models import PostModel,UserModel, SessionToken,indexmodel , swatch_UserModel,CommentModel
 
 
 from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
 from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
+
+
+
+from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
+from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
+
 
 
 CLIENT_ID='2e8b96d3df82469'
@@ -33,7 +43,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 account_sid = "ACcee93f758892db32f0920ab88b1ca945"
 auth_token = "144914bd933e248294d546ae74479862"
 client = Client(account_sid, auth_token)
-
+postive=["beautiful","clean","Hygenic"]
+negative=["pollution","dirty","unhygenic","unsafe"]
 
 
 def singnup_view(request):
@@ -333,26 +344,7 @@ def dashboard(request):
         return HttpResponseRedirect('/login/')
     return render(request,'dashboard.html',{'user':user_now})
 
-def like_view(request):
-    user = check_validation(request)
-    if user and request.method == 'POST':
-        form = LikeForm(request.POST)
-        if form.is_valid():
-            post_id = form.cleaned_data.get('post').id
 
-            existing_like = LikeModel.objects.filter(post_id=post_id, user=user).first()
-
-            if not existing_like:
-                LikeModel.objects.create(post_id=post_id, user=user)
-                email = EmailMessage('POSTLIKE', 'New Like on post', to=['instacloneapp@gmail.com'])
-                email.send()
-            else:
-                existing_like.delete()
-
-            return redirect('/feed/')
-
-    else:
-        return redirect('/login/')
 
 
 def feedback(request):
@@ -427,5 +419,78 @@ def password(request):
         return HttpResponseRedirect('/login/')
     return render(request,'password.html')
 
+def post_view(request):
+        user = check_validation(request)
+        print "post view called"
+        if user:
+            print 'Authentic user'
+            # if request.METHOD == 'GET':
+            #   form = PostForm()
+            if request.method == 'POST':
+                print 'post called'
+                form = PostForm(request.POST, request.FILES)
+                print form
+                if form.is_valid():
+                    print 'form is valid'
+                    image = form.cleaned_data['image']
+                    caption = form.cleaned_data['caption']
+                    print user
+                    print image
+                    print caption
+                    print BASE_DIR
+                    print "before basedr"
+                    post = PostModel(user=user, image=image, caption=caption)
+                    post.save()
+                    path = (r'C:/Users/ROADBLOCK/Desktop/user_images' + '/' + post.image.url)
+                    print "after basedr"
+                    print path
+                    client = ImgurClient(CLIENT_ID, CLIENT_SECRET)
+                    post.image_url = client.upload_from_path(path, anon=True)['link']
+                    post.save()
+                    redirect('/feed/')
+                else:
+                    print ' form is invalid '
+
+            else:
+                print ' get is called'
+                form = PostForm()
+                print form
+                # return (request,'upload.html')
+        else:
+            return redirect('/login/')
+        return render(request, 'upload.html')
 
 
+def swach(requests):
+    user = check_validation(requests)
+    if user:
+        url = "http://cl-api.vize.ai/2399"
+        files = {'image': open("test6.jpg", 'rb')}  # use path to your image
+
+        headers = {
+            "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjIzNTAsImlhdCI6MTUwNDkzNDM2MSwiZXhwIjoxNTEyNzEwMzYxfQ.iMIAMhM-D8KUSzoEJLm8EQm0pdVunbHeOeOrkYIhmzg"}
+
+        response = requests.request("POST", url, files=files, headers=headers)
+        print(response.text)
+        json_data = json.loads(response.text)
+        print json_data["cached"]
+
+
+
+def comment_view(request):
+    user = check_validation(request)
+    if user and request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            post_id = form.cleaned_data.get('post').id
+            comment_text = form.cleaned_data.get('comment_text')
+            comment = CommentModel.objects.create(user=user, post_id=post_id, comment_text=comment_text)
+            comment.save()
+            email = EmailMessage('NEW COMMENT ', ' New Comment on  post', to=['vaidishan9@gmail.com'])
+            email.send()
+
+            return redirect('/feed/')
+        else:
+            return redirect('/feed/')
+    else:
+        return redirect('/login')
