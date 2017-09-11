@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from views import singnup_view,indexview1,login_user,logout_view,activate,swatchh_signup,swatch_login,dashboard , feedback
+from views import singnup_view,indexview1,login_user,logout_view,activate,swatchh_signup,swatch_login,dashboard , feedback,password
 
 urlpatterns = [
     url(r'^$', indexview1),
@@ -11,5 +11,6 @@ url(r'^activate/',activate),
     url(r'^swatchh_signup/',swatchh_signup),
     url(r'^swatchh_login/',swatch_login),
     url(r'^dashboard/',dashboard),
-    url(r'^feedback/',feedback)
+    url(r'^feedback/',feedback),
+    url(r'^password/',password),
 ]

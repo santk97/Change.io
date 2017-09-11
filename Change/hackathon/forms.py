@@ -31,3 +31,8 @@ class feedback_form(forms.ModelForm):
     class Meta:
         model=feedback_model
         fields=['first_name','last_name','subject']
+
+class password_form(forms.ModelForm):
+    class Meta:
+        model=UserModel
+        fields=['password','re_password']
