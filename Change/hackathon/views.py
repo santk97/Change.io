@@ -9,11 +9,8 @@ from django.shortcuts import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> f78f2113f8a142aab61192b9e59afa8c04fae288
+
 
 
 from forms import LoginForm, SignUpForm
@@ -26,17 +23,16 @@ from models import UserModel, SessionToken,indexmodel,startmodel
 from forms import LikeForm,LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm
 from models import LikeModel,UserModel, SessionToken,indexmodel , swatch_UserModel
 
-<<<<<<< HEAD
-=======
-from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
-from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
->>>>>>> 017072938c011466f91ed8fd437d7be2fa57aa99
-=======
 
 from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
 from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
 
->>>>>>> f78f2113f8a142aab61192b9e59afa8c04fae288
+
+
+from forms import LoginForm, SignUpForm,Indexform1 , swatch_signform , swatch_LoginForm ,feedback_form , password_form
+from models import UserModel, SessionToken,indexmodel , swatch_UserModel,feedback_model
+
+
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
