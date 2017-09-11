@@ -38,4 +38,26 @@ class indexmodel(models.Model):
     last_name=models.CharField(max_length=200)
 
 
-class dashboard_model(models.Model):
+class startmodel(models.Model):
+    CONDITION_CHOICE_SEX=(
+        ('Male','Male'),
+        ('Female','Female'),
+        )
+    CONDITION_CHOICE_THEME=(
+        ('Art','Art'),
+        ('Design','Design'),
+        ('Fashion','Fashion'),
+        ('Technology','Technology'),
+        ('Food','Food'),
+        ('Music','Music'),
+        ('Journalism','Journalism'),
+    )
+    sex= models.CharField(max_length=2, choices=CONDITION_CHOICE_SEX)
+    theme = models.CharField(max_length=2, choices=CONDITION_CHOICE_THEME)
+
+    name=models.CharField(max_length=400)
+    age=models.IntegerField(max_length=2)
+    link=models.URLField()
+    description=models.CharField(max_length=400)
+    def __str__(self):
+        return self.name

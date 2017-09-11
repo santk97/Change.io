@@ -1,4 +1,4 @@
-from models import UserModel,project_model , indexmodel
+from models import UserModel,project_model , indexmodel,startmodel
 from django import forms
 
 class SignUpForm(forms.ModelForm):
@@ -16,3 +16,9 @@ class LoginForm(forms.ModelForm):
     class Meta:
       model = UserModel
       fields = ['email', 'password']
+
+
+class Startform(forms.ModelForm):
+    class Meta:
+        mode=startmodel
+        fields=['name','sex','age','theme','link','description']

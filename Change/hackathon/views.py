@@ -8,13 +8,13 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from twilio.rest import Client
 
-<<<<<<< HEAD
-from forms import LoginForm, SignUpForm,
+
+from forms import LoginForm, SignUpForm
 from models import UserModel, SessionToken
-=======
-from forms import LoginForm, SignUpForm,Indexform1
-from models import UserModel, SessionToken,indexmodel
->>>>>>> 2b29dbc95666c9074af03ba3cedcf0c5536524d6
+
+from forms import LoginForm, SignUpForm,Indexform1,Startform
+from models import UserModel, SessionToken,indexmodel,startmodel
+
 
 CLIENT_ID='2e8b96d3df82469'
 CLIENT_SECRET= 'f6292d93b81e0f055521eb71084b63b9ccc5329d'
@@ -163,9 +163,9 @@ def indexview1(request):
             user = indexmodel(first_name=first_name,last_name=last_name)
             user.save()
             try:
-                email = form.cleaned_data.get('email')
+                #email = form.cleaned_data.get('email')
                 emaill = EmailMessage('Feedback', 'New suggestion form' + (first_name),
-                                      to=[email])
+                                      to=['instacloneapp@gmail.com'])
                 emaill.send()
                 print "email send"
             except:
@@ -177,5 +177,46 @@ def indexview1(request):
     elif request.method == 'GET':
         form = Indexform1()
     return render(request, 'index.html', {'form': form})
+
+def logout_view(request):
+    user=check_validation(request)
+    if user:
+        token=SessionToken.objects.filter(user=user)
+        token.delete()
+        return redirect('/login/')
+    else:
+        return redirect('/login/')
+
+
+def start_view(request):
+
+    if request.method == 'POST':
+        form = Startform(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            sex= form.cleaned_data['sex']
+            age=form.cleaned_data['age']
+            theme=form.cleaned_data['theme']
+            link=form.cleaned_data['link']
+            description=form.cleaned_data['desccription']
+            #subject = form.cleaned_data['subject']
+            user = indexmodel(name=name,sex=sex,age=age,theme=theme,link=link,description=description)
+            user.save()
+            try:
+                #email = form.cleaned_data.get('email')
+                emaill = EmailMessage('New project', 'New project created' + (name),
+                                      to=['instacloneapp@gmail.com'])
+                emaill.send()
+                print "email send to developer"
+            except:
+                print ' network error in sending the mail to developer'
+
+            return render(request, 'dashboard.html')
+        else:
+            print " "
+    elif request.method == 'GET':
+        form = Indexform1()
+    return render(request, 'startproject.html', {'form': form})
+
 
 

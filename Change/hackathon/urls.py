@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^index/',indexview1),
     url(r'^login/',login_user),
     url(r'^logout/',logout_view),
-url(r'^activate/',activate),
+    url(r'^activate/',activate),
+    url(r'^dashboard',)
 ]
