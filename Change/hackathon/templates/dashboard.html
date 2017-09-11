@@ -204,22 +204,19 @@ Your browser does not support the video tag.
                 <p><strong>MX ₹ 269,850 </strong>pledged</p>
                <p><strong>98% </strong>funded</p>
             <p><strong>4days </strong> to go</p>
-                   <div style="display:inline-block">
-             upvotes
-                   </div>
+
    </form></div>
-                    <form method="POST" action="/like/">
-              {% csrf_token %}
+
              <div class="col-md-6">
-                 {% if post.has_liked %}
-                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"  value="Unlike"></i> Up Vote </p></a>
-                 {% else %}
-                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true" value="Like"></i> Down Vote</p></a>
+
+                <a><p><i class="fa fa-thumbs-up" aria-hidden="true"  ></i> Up Vote </p></a>
+
+                 <a><p><i class="fa fa-thumbs-down" aria-hidden="true" ></i> Down Vote</p></a>
                  <button class="btn btn-danger"style="padding-top:0;padding-bottom:0;" >Donate</button>
                    </div>
-                        {% endif %}
 
-                    </form> </div>
+
+                     </div>
 
            
            </div>
@@ -456,7 +453,7 @@ Your browser does not support the video tag.
 
   </form>
 
-          </div>      
+          </div>
           
               <div class="col-md-6 mess-anim">
           <img src="../static/img/Paper.png" class="animated bounce infinite mess-icon">

@@ -37,7 +37,7 @@ negative=["pollution","dirty","unhygenic","unsafe"]
 
 
 def index(request):
-    return render('index.html')
+    return render(request,'index.html')
 
 def singnup_view(request):
     print ' signup view called'
