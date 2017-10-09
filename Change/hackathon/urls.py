@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from views import activate, swatchh_signup, swatch_login, dashboard, feedback, password, comment_view, logout_view, \
-    login_user, singnup_view, index
+from views import activate, swatchh_signup,fakenews, swatch_login,learndrive, dashboard, feedback, password, comment_view, logout_view, swatchhbharat, login_user, singnup_view, index
+
 from views import start_view, post_view
 urlpatterns = [
     url(r'^$',index),
@@ -10,7 +10,10 @@ urlpatterns = [
     url(r'^login/',login_user),
     url(r'^logout/',logout_view),
     url(r'^activate/',activate),
-
+    url(r'^swatchhbharat',swatchhbharat),
+    url(r'^fakenews',fakenews),
+    url(r'^learndrive/',learndrive)
+,
     url(r'^startproject/',start_view),
 
     url(r'^activate/',activate),

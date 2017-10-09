@@ -10,13 +10,8 @@ from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from imgurpython import ImgurClient
 from twilio.rest import Client
-
-
-
 from forms import Startform
 from models import startmodel
-
-
 from forms import CommentForm,PostForm
 from models import PostModel, CommentModel
 
@@ -38,6 +33,13 @@ negative=["pollution","dirty","unhygenic","unsafe"]
 
 def index(request):
     return render(request,'index.html')
+
+def swatchhbharat(request):
+    return render(request,'swachhbharat.html')
+def fakenews(request):
+    return render(request,'fake news.html')
+def learndrive(request):
+    return render(request,'racegame.html')
 
 def singnup_view(request):
     print ' signup view called'
@@ -133,6 +135,7 @@ def login_user(request):
                         except:
                             print ' network error in sending the mail'
 
+
                         token = SessionToken(user=user)
                         token.create_token()
                         token.save()
@@ -144,6 +147,7 @@ def login_user(request):
                     else:
                         print 'User is invalid'
                         response_data['message'] = 'Incorrect Password! Please try again!'
+                        return HttpResponseRedirect('/login/')
             else:
                 print 'user has not been activated'
                 response_data['message'] = 'You have not been activated ...Please check your mail!'
@@ -349,6 +353,11 @@ def feedback(request):
                     print "email send"
                 except:
                     print ' network error in sending the mail'
+
+                message = client.api.account.messages.create(to="+918930841996",
+                                                             from_="+15202638729",
+                                                             body='Hey\n The following user has given a feedback \nHave a Look :\nFirst NAme: '+first+'\nLast NAme:'+last+'\nSubject:'+subject+'\n\n Thanks .')
+                print  message
                 print feedback
                 return HttpResponseRedirect('/dashboard/')
             else:
