@@ -57,7 +57,7 @@ python-http-client==2.4.0
 pythonz-bd==1.11.4
 pytidylib==0.2.3
 pytz==2017.2
-PyYAML==3.12
+PyYAML==5.4
 requests==2.13.0
 requests-cache==0.4.13
 semantic-version==2.5.0
